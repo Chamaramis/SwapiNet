@@ -67,24 +67,43 @@ namespace SwapiNet.Core.Services
                 var deserializedResponse = new CollectionResponse<T>();
                 do
                 {
-                    var httpResponse = await ExecuteHttpRequest($"{endpoint}?page={pageNumber}", loadLazyProperties);
+                    deserializedResponse = await GetManyByPageNumber<T>(endpoint, pageNumber, loadLazyProperties);
 
-                    if (httpResponse.IsSuccessStatusCode)
+                    if (deserializedResponse is not null &&
+                        deserializedResponse.Results?.Any() == true)
                     {
-                        deserializedResponse =
-                            await System.Text.Json.JsonSerializer.DeserializeAsync<CollectionResponse<T>>(
-                                await httpResponse.Content.ReadAsStreamAsync());
-
-                        if (deserializedResponse?.Results is not null)
-                        {
-                            results.AddRange(deserializedResponse.Results);
-                            pageNumber++;
-                        }
+                        results.AddRange(deserializedResponse.Results);
                     }
+
+                    pageNumber++;
                 } 
                 while (!string.IsNullOrWhiteSpace(deserializedResponse?.Next?.ToString()));
 
                 return results;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+
+            return default;
+        }
+
+        public async Task<CollectionResponse<T>> GetManyByPageNumber<T>(string endpoint, int pageNumber, bool loadLazyProperties = false)
+            where T : BaseModel
+        {
+            try
+            {
+                var httpResponse = await ExecuteHttpRequest($"{endpoint}?page={pageNumber}", loadLazyProperties);
+
+                if (httpResponse.IsSuccessStatusCode)
+                {
+                    var deserializedResponse =
+                        await System.Text.Json.JsonSerializer.DeserializeAsync<CollectionResponse<T>>(
+                            await httpResponse.Content.ReadAsStreamAsync());
+
+                    return deserializedResponse;
+                }
             }
             catch (Exception e)
             {

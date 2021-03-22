@@ -42,6 +42,18 @@ namespace SwapiNet.Core.Services
             return new List<T>(0);
         }
 
+        public async Task<CollectionResponse<T>> GetByPageNumber<T>(int pageNumber)
+            where T : BaseModel
+        {
+            if (endpoints.TryGetValue(typeof(T), out string endpoint))
+            {
+                var response = await BasicHttpClientService.Instance.GetManyByPageNumber<T>(endpoint, pageNumber);
+                return response;
+            }
+
+            return default;
+        }
+
         public async Task<T> GetById<T>(int id, bool loadLazyProperties = true)
             where T : BaseModel
         {

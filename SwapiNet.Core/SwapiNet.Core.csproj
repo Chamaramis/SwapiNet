@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <PackageId>chamgranillo-swapinet</PackageId>
+    <Authors>Cham Granillo</Authors>
+    <Product>Swapi NET</Product>
+    <Description>.NET 5 Wrapper for the Star Wars API. Intended for learning and development purposes. Stripped pagination from the original API.</Description>
+    <RepositoryUrl>https://github.com/Chamaramis/SwapiNet</RepositoryUrl>
+    <PackageTags>swapi, c#, open api</PackageTags>
   </PropertyGroup>
 
 </Project>
