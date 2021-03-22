@@ -8,6 +8,7 @@
     <Description>.NET 5 Wrapper for the Star Wars API. Intended for learning and development purposes. Stripped pagination from the original API.</Description>
     <RepositoryUrl>https://github.com/Chamaramis/SwapiNet</RepositoryUrl>
     <PackageTags>swapi, c#, open api</PackageTags>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
 </Project>
